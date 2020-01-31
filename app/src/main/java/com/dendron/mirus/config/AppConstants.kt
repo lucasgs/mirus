@@ -1,4 +1,6 @@
-package com.dendron.mirus
+package com.dendron.mirus.config
+
+import com.dendron.mirus.BuildConfig
 
 class AppConstants {
     companion object {

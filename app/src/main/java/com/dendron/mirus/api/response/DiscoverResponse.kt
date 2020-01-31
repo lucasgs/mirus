@@ -1,4 +1,4 @@
-package com.dendron.mirus.api
+package com.dendron.mirus.api.response
 
 
 import com.google.gson.annotations.SerializedName
