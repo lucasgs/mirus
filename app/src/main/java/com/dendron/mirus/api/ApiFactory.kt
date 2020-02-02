@@ -9,6 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiFactory {
 
+    private const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
+    const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500/"
+
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url()
             .newBuilder()
@@ -29,7 +32,7 @@ object ApiFactory {
 
     private fun retrofit(): Retrofit = Retrofit.Builder()
         .client(moviesClient)
-        .baseUrl("https://api.themoviedb.org/3/")
+        .baseUrl(TMDB_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         //.addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())

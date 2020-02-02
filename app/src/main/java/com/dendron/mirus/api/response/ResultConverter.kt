@@ -1,5 +1,6 @@
 package com.dendron.mirus.api.response
 
+import com.dendron.mirus.api.ApiFactory
 import com.dendron.mirus.model.Movie
 
 fun Result.toMovie(): Movie {
@@ -7,7 +8,7 @@ fun Result.toMovie(): Movie {
         id = id,
         overview = overview,
         popularity = popularity,
-        posterPath = posterPath,
+        posterPath = ApiFactory.TMDB_IMAGE_BASE_URL + posterPath,
         releaseDate = releaseDate,
         title = title
     )
