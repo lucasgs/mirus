@@ -1,4 +1,4 @@
-package com.dendron.mirus.ui.home
+package com.dendron.mirus.ui.movies
 
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +13,7 @@ fun moviesAdapterDelegate(itemClickedListener : (Movie) -> Unit) = adapterDelega
     val poster : ImageView = findViewById(R.id.ivPoster)
 
     title.setOnClickListener { itemClickedListener(item) }
+    poster.setOnClickListener { itemClickedListener(item) }
 
     bind { diffPayloads -> // diffPayloads is a List<Any> containing the Payload from your DiffUtils
         title.text = item.title

@@ -1,4 +1,4 @@
-package com.dendron.mirus.ui.home
+package com.dendron.mirus.ui.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,6 +25,5 @@ class HomeViewModel : ViewModel() {
             _movies.value = movieRepository.getDiscoverMovies()
         }
     }
-
 
 }
