@@ -30,21 +30,18 @@ class MoviesActivity : AppCompatActivity() {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        //viewManager = LinearLayoutManager(activity)
         viewManager = GridLayoutManager(this, 2)
         viewAdapter = MoviesAdapter { movie ->
 
-            //Toast.makeText(activity!!, "Clicked on ${it.id}: ${it.title}", Toast.LENGTH_LONG).show()
-
             startActivity(
                 Intent(this, MovieDetailActivity::class.java)
-                    .putExtra(TITLE, movie.title)
-                    .putExtra(SUMMARY, movie.overview)
-                    .putExtra(POSTER, movie.posterPath)
-                    .putExtra(RELEASE_DATE, movie.releaseDate)
-                    .putExtra(RATING, movie.popularity)
+                    .putExtra(MOVIE_BACKDROP, movie.backDropPath)
+                    .putExtra(MOVIE_POSTER, movie.posterPath)
+                    .putExtra(MOVIE_TITLE, movie.title)
+                    .putExtra(MOVIE_VOTE_AVERAGE, movie.voteAverage)
+                    .putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
+                    .putExtra(MOVIE_OVERVIEW, movie.overview)
             )
-
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rvMovies).apply {
@@ -75,11 +72,12 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val TITLE = "TITLE"
-        const val SUMMARY = "SUMMARY"
-        const val POSTER = "POSTER"
-        const val RELEASE_DATE = "RELEASE_DATE"
-        const val RATING = "RATING"
+        const val MOVIE_BACKDROP = "extra_movie_backdrop"
+        const val MOVIE_POSTER = "extra_movie_poster"
+        const val MOVIE_TITLE = "extra_movie_title"
+        const val MOVIE_VOTE_AVERAGE = "extra_movie_vote_average"
+        const val MOVIE_RELEASE_DATE = "extra_movie_release_date"
+        const val MOVIE_OVERVIEW = "extra_movie_overview"
     }
 
 }

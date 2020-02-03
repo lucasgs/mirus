@@ -11,6 +11,7 @@ object ApiFactory {
 
     private const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
     const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+    const val TMDB_BACLDROP_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w1280"
 
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url()

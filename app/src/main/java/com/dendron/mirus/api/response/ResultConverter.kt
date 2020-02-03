@@ -8,8 +8,10 @@ fun Result.toMovie(): Movie {
         id = id,
         overview = overview,
         popularity = popularity,
-        posterPath = ApiFactory.TMDB_IMAGE_BASE_URL + posterPath,
+        voteAverage = voteAverage,
+        posterPath = "${ApiFactory.TMDB_IMAGE_BASE_URL}$posterPath",
         releaseDate = releaseDate,
-        title = title
+        title = title,
+        backDropPath = "${ApiFactory.TMDB_BACLDROP_IMAGE_BASE_URL}$backdropPath"
     )
 }
