@@ -9,7 +9,14 @@ class MovieRepository(private val api: MoviesApi) : BaseRepository() {
     suspend fun getDiscoverMovies(): List<Movie> {
         return safeApiCall(
             call = { api.getPopularMoviesAsync().await() },
-            error = "Error fetching news"
+            error = "Error fetching movies"
+        )?.results!!.map { it.toMovie() }
+    }
+
+    suspend fun searchMovies(query: String): List<Movie> {
+        return safeApiCall(
+            call = { api.searchMoviesAsync(query).await() },
+            error = "Error searching movies"
         )?.results!!.map { it.toMovie() }
     }
 

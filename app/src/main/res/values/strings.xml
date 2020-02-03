@@ -2,4 +2,7 @@
     <string name="app_name">mirus</string>
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
     <string name="movie_poster">Movie poster</string>
+    <string name="search_title">Type a movie name</string>
+    <string name="search_hint">search</string>
+    <string name="discover_title">Discover</string>
 </resources>

@@ -9,21 +9,49 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.dendron.mirus.api.response.Result
-import com.dendron.mirus.model.Movie
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val movieRepository: MovieRepository = MovieRepository(ApiFactory.moviesApi)
+) : ViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>().apply {
+    private val _movies = MutableLiveData<MoviesState>().apply {
         emptyList<Result>()
     }
-    val movies: LiveData<List<Movie>> = _movies
+
+    val movies: LiveData<MoviesState> = _movies
 
     init {
         GlobalScope.launch(Dispatchers.Main) {
-            val movieRepository =
-                MovieRepository(ApiFactory.moviesApi)
-            _movies.value = movieRepository.getDiscoverMovies()
+           emitDiscoverState()
         }
+    }
+
+    fun searchMovies(query: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+
+            if (query.length > 2) {
+                emitSearchState(query)
+            } else if(query.isEmpty()) {
+                emitDiscoverState()
+            }
+        }
+    }
+
+    private fun emitDiscoverState() {
+        GlobalScope.launch(Dispatchers.Main) {
+            _movies.value = MoviesState(TITLE_DISCOVER, movieRepository.getDiscoverMovies())
+        }
+    }
+
+    private fun emitSearchState(query: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            _movies.value = MoviesState(TITLE_SEARCH, movieRepository.searchMovies(query))
+        }
+    }
+
+    companion object {
+        private const val TITLE_DISCOVER = "Discover"
+        private const val TITLE_SEARCH = "Search"
     }
 
 }

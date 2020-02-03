@@ -1,8 +1,11 @@
 package com.dendron.mirus.ui.movies
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dendron.mirus.R
 import com.dendron.mirus.model.Movie
 import com.dendron.mirus.ui.details.MovieDetailActivity
-
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_movies.*
+import kotlinx.android.synthetic.main.content_movies.*
 
 class MoviesActivity : AppCompatActivity() {
 
@@ -20,17 +24,17 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var viewAdapter: MoviesAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by lazy {
+        ViewModelProviders.of(this).get(HomeViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movies)
         setSupportActionBar(toolbar)
 
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-
         viewManager = GridLayoutManager(this, 2)
+
         viewAdapter = MoviesAdapter { movie ->
 
             startActivity(
@@ -53,15 +57,48 @@ class MoviesActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
-        homeViewModel.movies.observe(this, Observer { movies ->
-            showMovies(movies)
+        homeViewModel.movies.observe(this, Observer { state ->
+            showSectionTitle(state.sectionName)
+            showMovies(state.movies)
         })
-
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.options_menu, menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
+            // Assumes current activity is the searchable activity
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false // Do not iconify the widget; expand it by default
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    clearFocus()
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+
+                    homeViewModel.searchMovies(newText)
+
+                    return false
+                }
+
+            })
+        }
+
+        return true
+    }
+
+    private fun showSectionTitle(title: String) {
+        tvSectionTitle.text = title
     }
 
     private fun showMovies(movies: List<Movie>?) {
