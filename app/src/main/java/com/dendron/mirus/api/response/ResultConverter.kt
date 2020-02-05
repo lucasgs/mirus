@@ -12,6 +12,6 @@ fun Result.toMovie(): Movie {
         posterPath = "${ApiFactory.TMDB_IMAGE_BASE_URL}$posterPath",
         releaseDate = releaseDate,
         title = title,
-        backDropPath = "${ApiFactory.TMDB_BACLDROP_IMAGE_BASE_URL}$backdropPath"
+        backDropPath = "${ApiFactory.TMDB_BACKDROP_IMAGE_BASE_URL}$backdropPath"
     )
 }

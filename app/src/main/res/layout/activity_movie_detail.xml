@@ -101,5 +101,18 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/movie_poster_card"
             app:layout_constraintStart_toStartOf="@+id/movie_release_date" />
+
+        <ToggleButton
+            android:id="@+id/movie_favorite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_favorite_white"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="@+id/movie_rating"
+            app:layout_constraintEnd_toEndOf="@+id/movie_title" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dendron.mirus.R
 import com.dendron.mirus.model.Movie
 import com.dendron.mirus.ui.details.MovieDetailActivity
+import com.dendron.mirus.ui.details.MovieUIModel
+import com.dendron.mirus.ui.details.toUiModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_movies.*
 import kotlinx.android.synthetic.main.content_movies.*
@@ -39,12 +41,7 @@ class MoviesActivity : AppCompatActivity() {
 
             startActivity(
                 Intent(this, MovieDetailActivity::class.java)
-                    .putExtra(MOVIE_BACKDROP, movie.backDropPath)
-                    .putExtra(MOVIE_POSTER, movie.posterPath)
-                    .putExtra(MOVIE_TITLE, movie.title)
-                    .putExtra(MOVIE_VOTE_AVERAGE, movie.voteAverage)
-                    .putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
-                    .putExtra(MOVIE_OVERVIEW, movie.overview)
+                    .putExtra(MOVIE_DATA, movie)
             )
         }
 
@@ -100,7 +97,7 @@ class MoviesActivity : AppCompatActivity() {
         tvSectionTitle.text = title
     }
 
-    private fun showMovies(movies: List<Movie>?) {
+    private fun showMovies(movies: List<MovieUIModel>?) {
         movies?.let {
             viewAdapter.updateItems(movies)
         }
@@ -108,12 +105,7 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val MOVIE_BACKDROP = "extra_movie_backdrop"
-        const val MOVIE_POSTER = "extra_movie_poster"
-        const val MOVIE_TITLE = "extra_movie_title"
-        const val MOVIE_VOTE_AVERAGE = "extra_movie_vote_average"
-        const val MOVIE_RELEASE_DATE = "extra_movie_release_date"
-        const val MOVIE_OVERVIEW = "extra_movie_overview"
+        const val MOVIE_DATA = "movie_data"
     }
 
 }

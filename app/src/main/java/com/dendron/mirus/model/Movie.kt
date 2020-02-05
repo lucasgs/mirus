@@ -1,5 +1,9 @@
 package com.dendron.mirus.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Movie(
     val id: Int,
     val overview: String,
@@ -9,4 +13,4 @@ data class Movie(
     val title: String,
     val backDropPath: String,
     val voteAverage: Double
-)
+) : Parcelable

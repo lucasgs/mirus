@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dendron.mirus.repository.MovieRepository
-import com.dendron.mirus.api.ApiFactory
-import kotlinx.coroutines.launch
 import com.dendron.mirus.api.response.Result
+import com.dendron.mirus.di.providesMoviesRepository
+import com.dendron.mirus.ui.details.toUiModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MoviesViewModel(
-    private val movieRepository: MovieRepository = MovieRepository(ApiFactory.moviesApi)
+    private val movieRepository: MovieRepository = providesMoviesRepository()
 ) : ViewModel() {
 
     private val _movies = MutableLiveData<MoviesState>().apply {
@@ -34,13 +35,13 @@ class MoviesViewModel(
 
     private fun emitDiscoverState() {
         viewModelScope.launch(Dispatchers.IO) {
-            _movies.postValue(MoviesState(TITLE_DISCOVER, movieRepository.getDiscoverMovies()))
+            _movies.postValue(MoviesState(TITLE_DISCOVER, movieRepository.getDiscoverMovies().map { it.toUiModel(false) }))
         }
     }
 
     private fun emitSearchState(query: String) {
-        viewModelScope.launch(Dispatchers.IO){
-            _movies.postValue(MoviesState(TITLE_SEARCH, movieRepository.searchMovies(query)))
+        viewModelScope.launch(Dispatchers.IO) {
+            _movies.postValue(MoviesState(TITLE_SEARCH, movieRepository.searchMovies(query).map { it.toUiModel(false) }))
         }
     }
 

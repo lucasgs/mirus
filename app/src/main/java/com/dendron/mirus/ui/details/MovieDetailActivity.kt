@@ -4,41 +4,49 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.dendron.mirus.R
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_BACKDROP
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_OVERVIEW
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_POSTER
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_RELEASE_DATE
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_TITLE
-import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_VOTE_AVERAGE
+import com.dendron.mirus.model.Movie
+import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_DATA
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 class MovieDetailActivity : AppCompatActivity() {
+
+    private val moviesDetailViewModel: MovieDetailViewModel by lazy {
+        ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
         intent?.let {
-            val picasso = Picasso.get()
 
-            picasso
-                .load(intent.getStringExtra(MOVIE_BACKDROP))
-                .into(movie_backdrop)
+            intent.getParcelableExtra<MovieUIModel>(MOVIE_DATA)?.let { model ->
 
-            val posterPath = intent.getStringExtra(MOVIE_POSTER)
-            picasso
-                .load(posterPath)
-                .fit()
-                .into(movie_poster)
+                val movie = model.movie
 
-            movie_poster.setOnClickListener { openPicture(posterPath) }
+                val picasso = Picasso.get()
 
-            movie_title.text = intent.getStringExtra(MOVIE_TITLE)
-            movie_rating.rating = (intent.getDoubleExtra(MOVIE_VOTE_AVERAGE, 0.0) / 2).toFloat()
-            movie_release_date.text = intent.getStringExtra(MOVIE_RELEASE_DATE)
-            movie_overview.text = intent.getStringExtra(MOVIE_OVERVIEW)
+                picasso
+                    .load(movie.backDropPath)
+                    .into(movie_backdrop)
+
+                picasso
+                    .load(movie.posterPath)
+                    .fit()
+                    .into(movie_poster)
+
+                movie_poster.setOnClickListener { openPicture(movie.posterPath) }
+
+                movie_title.text = movie.title
+                movie_rating.rating = (movie.voteAverage / 2).toFloat()
+                movie_release_date.text = movie.releaseDate
+                movie_overview.text = movie.overview
+
+                movie_favorite.setOnClickListener { moviesDetailViewModel.saveFavoriteMovie(movie) }
+            }
         }
     }
 
