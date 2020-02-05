@@ -22,20 +22,27 @@ class MovieDetailActivity : AppCompatActivity() {
 
         intent?.let {
             val picasso = Picasso.get()
-            picasso.load(intent.getStringExtra(MOVIE_BACKDROP)).into(movie_backdrop)
+
+            picasso
+                .load(intent.getStringExtra(MOVIE_BACKDROP))
+                .into(movie_backdrop)
 
             val posterPath = intent.getStringExtra(MOVIE_POSTER)
-            picasso.load(posterPath).into(movie_poster)
+            picasso
+                .load(posterPath)
+                .fit()
+                .into(movie_poster)
+
             movie_poster.setOnClickListener { openPicture(posterPath) }
 
             movie_title.text = intent.getStringExtra(MOVIE_TITLE)
-            movie_rating.rating = (intent.getDoubleExtra(MOVIE_VOTE_AVERAGE, 0.0)  / 2).toFloat()
+            movie_rating.rating = (intent.getDoubleExtra(MOVIE_VOTE_AVERAGE, 0.0) / 2).toFloat()
             movie_release_date.text = intent.getStringExtra(MOVIE_RELEASE_DATE)
             movie_overview.text = intent.getStringExtra(MOVIE_OVERVIEW)
         }
     }
 
-    private fun openPicture(imagePath: String){
+    private fun openPicture(imagePath: String) {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(Uri.parse(imagePath), "image/*")

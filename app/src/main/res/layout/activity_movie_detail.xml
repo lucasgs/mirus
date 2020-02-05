@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:background="@color/colorBackground">
 
@@ -58,18 +59,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_poster_card"
             app:layout_constraintTop_toBottomOf="@+id/backdrop_guideline"
-            android:fontFamily="@font/roboto"/>
+            android:fontFamily="@font/roboto"
+            tools:text="A movie title"/>
 
         <TextView
             android:id="@+id/movie_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
             android:textColor="#757575"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/movie_title"
             app:layout_constraintTop_toBottomOf="@+id/movie_title"
-            android:fontFamily="@font/roboto"
-            />
+            tools:text="20-01-2020" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/movie_poster_title_barrier"
@@ -89,16 +91,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_poster_title_barrier"
             android:textColor="@color/colorFont"
-            android:fontFamily="@font/roboto"/>
+            android:fontFamily="@font/roboto"
+            tools:text="A movie description"/>
 
         <RatingBar
             android:id="@+id/movie_rating"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/movie_poster_card"
-            app:layout_constraintStart_toStartOf="@+id/movie_poster_card"
-            app:layout_constraintTop_toBottomOf="@+id/movie_poster_card" />
+            app:layout_constraintBottom_toBottomOf="@+id/movie_poster_card"
+            app:layout_constraintStart_toStartOf="@+id/movie_release_date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
