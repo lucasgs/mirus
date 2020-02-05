@@ -24,8 +24,8 @@ class MoviesActivity : AppCompatActivity() {
     private lateinit var viewAdapter: MoviesAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProviders.of(this).get(HomeViewModel::class.java)
+    private val moviesViewModel: MoviesViewModel by lazy {
+        ViewModelProviders.of(this).get(MoviesViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@ class MoviesActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
-        homeViewModel.movies.observe(this, Observer { state ->
+        moviesViewModel.movies.observe(this, Observer { state ->
             showSectionTitle(state.sectionName)
             showMovies(state.movies)
         })
@@ -74,6 +74,7 @@ class MoviesActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
+
             // Assumes current activity is the searchable activity
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             isIconifiedByDefault = false // Do not iconify the widget; expand it by default
@@ -85,10 +86,8 @@ class MoviesActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-
-                    homeViewModel.searchMovies(newText)
-
-                    return false
+                    moviesViewModel.searchMovies(newText)
+                    return true
                 }
 
             })
