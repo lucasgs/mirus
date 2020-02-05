@@ -3,10 +3,13 @@ package com.dendron.mirus.ui.movies
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,17 +38,39 @@ class MoviesActivity : AppCompatActivity() {
 
         viewManager = GridLayoutManager(this, 2)
 
-        viewAdapter = MoviesAdapter { movie ->
+        viewAdapter = MoviesAdapter { movie, title, poster ->
 
-            startActivity(
-                Intent(this, MovieDetailActivity::class.java)
-                    .putExtra(MOVIE_BACKDROP, movie.backDropPath)
-                    .putExtra(MOVIE_POSTER, movie.posterPath)
-                    .putExtra(MOVIE_TITLE, movie.title)
-                    .putExtra(MOVIE_VOTE_AVERAGE, movie.voteAverage)
-                    .putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
-                    .putExtra(MOVIE_OVERVIEW, movie.overview)
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                val titlePair = androidx.core.util.Pair.create(title as View, "title")
+                val posterPair = androidx.core.util.Pair.create(poster as View, "poster")
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this, posterPair
+                )
+
+                startActivity(
+                    Intent(this, MovieDetailActivity::class.java)
+                        .putExtra(MOVIE_BACKDROP, movie.backDropPath)
+                        .putExtra(MOVIE_POSTER, movie.posterPath)
+                        .putExtra(MOVIE_TITLE, movie.title)
+                        .putExtra(MOVIE_VOTE_AVERAGE, movie.voteAverage)
+                        .putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
+                        .putExtra(MOVIE_OVERVIEW, movie.overview)
+                    , options.toBundle()
+                )
+            } else {
+
+                startActivity(
+                    Intent(this, MovieDetailActivity::class.java)
+                        .putExtra(MOVIE_BACKDROP, movie.backDropPath)
+                        .putExtra(MOVIE_POSTER, movie.posterPath)
+                        .putExtra(MOVIE_TITLE, movie.title)
+                        .putExtra(MOVIE_VOTE_AVERAGE, movie.voteAverage)
+                        .putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
+                        .putExtra(MOVIE_OVERVIEW, movie.overview)
+                )
+            }
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rvMovies).apply {

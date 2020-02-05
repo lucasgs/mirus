@@ -30,7 +30,6 @@ class MovieDetailActivity : AppCompatActivity() {
             val posterPath = intent.getStringExtra(MOVIE_POSTER)
             picasso
                 .load(posterPath)
-                .fit()
                 .into(movie_poster)
 
             movie_poster.setOnClickListener { openPicture(posterPath) }
