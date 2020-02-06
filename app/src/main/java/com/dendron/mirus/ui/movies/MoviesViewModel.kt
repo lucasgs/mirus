@@ -16,18 +16,30 @@ class MoviesViewModel(
     private val movieRepository: MovieRepository = providesMoviesRepository()
 ) : ViewModel() {
 
-    private val _movies = MutableLiveData<MoviesState>().apply {
+    private val _state = MutableLiveData<MoviesState>().apply {
         emptyList<Result>()
     }
 
-    val movies: LiveData<MoviesState> = _movies
+    val state: LiveData<MoviesState> = _state
+
+    private var discoverMoviesPage = 1
 
     init {
         emitDiscoverState()
     }
 
+    fun getMoreMovies() {
+        when(_state.value?.section ?: Section.Discover){
+            Section.Discover -> {
+                discoverMoviesPage++
+                emitDiscoverMoreMoviesState()
+            }
+        }
+
+    }
+
     fun searchMovies(query: String) {
-        if (query.length > 2) {
+        if (query.length > SEARCH_MIN_CHAR_COUNT) {
             emitSearchState(query)
         } else if (query.isEmpty()) {
             emitDiscoverState()
@@ -38,12 +50,43 @@ class MoviesViewModel(
         return movieRepository.isFavoriteMovie(movie)
     }
 
+    fun toggleFavoritesMovies(showFavorites: Boolean) {
+        if (showFavorites) {
+            discoverMoviesPage = 1
+            emitDiscoverState()
+        } else {
+            emitFavoritesState()
+        }
+    }
+
+    private fun emitDiscoverMoreMoviesState() {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val movies = _state.value?.movies ?: emptyList()
+
+            val moreMovies = movieRepository.getDiscoverMovies(discoverMoviesPage).map {
+                it.toUiModel(
+                    movieRepository.isFavoriteMovie(
+                        it
+                    )
+                )
+            }
+
+            _state.postValue(
+                MoviesState(
+                    section = Section.Discover,
+                    movies = movies + moreMovies
+                )
+            )
+        }
+    }
+
     private fun emitDiscoverState() {
         viewModelScope.launch(Dispatchers.IO) {
-            _movies.postValue(
+            _state.postValue(
                 MoviesState(
-                    TITLE_DISCOVER,
-                    movieRepository.getDiscoverMovies().map {
+                    section = Section.Discover,
+                    movies = movieRepository.getDiscoverMovies(discoverMoviesPage).map {
                         it.toUiModel(
                             movieRepository.isFavoriteMovie(
                                 it
@@ -56,10 +99,10 @@ class MoviesViewModel(
 
     private fun emitSearchState(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _movies.postValue(
+            _state.postValue(
                 MoviesState(
-                    TITLE_SEARCH,
-                    movieRepository.searchMovies(query).map {
+                    section = Section.Search,
+                    movies = movieRepository.searchMovies(query).map {
                         it.toUiModel(
                             movieRepository.isFavoriteMovie(
                                 it
@@ -70,30 +113,20 @@ class MoviesViewModel(
         }
     }
 
-    fun toggleFavoritesMovies(showFavorites: Boolean) {
-        if (showFavorites) {
-            emitDiscoverState()
-        } else {
-            emitFavoritesState()
-        }
-    }
-
     private fun emitFavoritesState() {
         viewModelScope.launch(Dispatchers.IO) {
-            _movies.postValue(
+            _state.postValue(
                 MoviesState(
-                    TITLE_FAVORITES,
-                    movieRepository.getFavoritesMovie().map { it.toUiModel(true) },
-                    true
+                    section = Section.Favorites,
+                    movies = movieRepository.getFavoritesMovie().map { it.toUiModel(true) },
+                    showFavorites = true
                 )
             )
         }
     }
 
     companion object {
-        private const val TITLE_DISCOVER = "Discover"
-        private const val TITLE_SEARCH = "Search"
-        private const val TITLE_FAVORITES = "Favorites"
+        private const val SEARCH_MIN_CHAR_COUNT = 2
     }
 
 }

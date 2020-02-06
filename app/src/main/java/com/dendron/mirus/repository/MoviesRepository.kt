@@ -16,9 +16,9 @@ class MovieRepository(
     private val gson = Gson()
     private val moviesType = object : TypeToken<List<Movie>>() {}.type
 
-    suspend fun getDiscoverMovies(): List<Movie> {
+    suspend fun getDiscoverMovies(page: Int): List<Movie> {
         return safeApiCall(
-            call = { api.getPopularMoviesAsync().await() },
+            call = { api.getPopularMoviesAsync(page).await() },
             error = "Error fetching movies"
         )?.results?.map { it.toMovie() } ?: emptyList()
     }

@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface MoviesApi {
 
     @GET("discover/movie")
-    fun getPopularMoviesAsync(): Deferred<Response<DiscoverResponse>>
+    fun getPopularMoviesAsync(@Query("page") page: Int): Deferred<Response<DiscoverResponse>>
 
     @GET("search/movie")
     fun searchMoviesAsync(@Query("query") query: String): Deferred<Response<DiscoverResponse>>

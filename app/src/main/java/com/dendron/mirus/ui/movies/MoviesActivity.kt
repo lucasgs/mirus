@@ -24,7 +24,7 @@ class MoviesActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: MoviesAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewManager: GridLayoutManager
 
     private val moviesViewModel: MoviesViewModel by lazy {
         ViewModelProviders.of(this).get(MoviesViewModel::class.java)
@@ -39,12 +39,14 @@ class MoviesActivity : AppCompatActivity() {
 
         viewAdapter = MoviesAdapter { model, title, poster ->
 
+            val updatedModel =
+                model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                 val titlePair = androidx.core.util.Pair.create(title as View, "title")
                 val posterPair = androidx.core.util.Pair.create(poster as View, "poster")
 
-                val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this, posterPair
                 )
@@ -56,10 +58,9 @@ class MoviesActivity : AppCompatActivity() {
                 )
             } else {
 
-                val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
-            startActivity(
-                Intent(this, MovieDetailActivity::class.java)
-                    .putExtra(MOVIE_DATA, updatedModel)
+                startActivity(
+                    Intent(this, MovieDetailActivity::class.java)
+                        .putExtra(MOVIE_DATA, updatedModel)
                 )
             }
         }
@@ -71,10 +72,19 @@ class MoviesActivity : AppCompatActivity() {
 
             layoutManager = viewManager
             adapter = viewAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+
+                    if (!recyclerView.canScrollVertically(1) && dy != 0) {
+                        moviesViewModel.getMoreMovies()
+                    }
+                }
+            })
         }
 
-        moviesViewModel.movies.observe(this, Observer { state ->
-            showSectionTitle(state.sectionName)
+        moviesViewModel.state.observe(this, Observer { state ->
+            showSectionTitle(state.section.name)
             showMovies(state.movies)
             setFavoriteIcon(state.showFavorites)
         })
@@ -85,7 +95,7 @@ class MoviesActivity : AppCompatActivity() {
     }
 
     private fun setFavoriteIcon(showFavorites: Boolean) {
-        if (showFavorites){
+        if (showFavorites) {
             fab.setImageResource(R.drawable.ic_home_white)
         } else {
             fab.setImageResource(R.drawable.ic_favorite_white)
