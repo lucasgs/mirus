@@ -3,10 +3,13 @@ package com.dendron.mirus.ui.movies
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,13 +37,31 @@ class MoviesActivity : AppCompatActivity() {
 
         viewManager = GridLayoutManager(this, 2)
 
-        viewAdapter = MoviesAdapter { model ->
+        viewAdapter = MoviesAdapter { model, title, poster ->
 
-            val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                val titlePair = androidx.core.util.Pair.create(title as View, "title")
+                val posterPair = androidx.core.util.Pair.create(poster as View, "poster")
+
+                val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this, posterPair
+                )
+
+                startActivity(
+                    Intent(this, MovieDetailActivity::class.java)
+                        .putExtra(MOVIE_DATA, updatedModel)
+                    , options.toBundle()
+                )
+            } else {
+
+                val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
             startActivity(
                 Intent(this, MovieDetailActivity::class.java)
                     .putExtra(MOVIE_DATA, updatedModel)
-            )
+                )
+            }
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rvMovies).apply {

@@ -1,12 +1,14 @@
 package com.dendron.mirus.ui.movies
 
+import android.widget.ImageView
+import android.widget.TextView
 import com.dendron.mirus.ui.details.MovieUIModel
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
-class MoviesAdapter(itemClickedListener: (MovieUIModel) -> Unit) : ListDelegationAdapter<List<MovieUIModel>>(
-    moviesAdapterDelegate {
+class MoviesAdapter(itemClickedListener: (MovieUIModel, TextView, ImageView) -> Unit) : ListDelegationAdapter<List<MovieUIModel>>(
+    moviesAdapterDelegate { movie, title, imageview ->
         itemClickedListener.invoke(
-            it
+            movie, title, imageview
         )
     }
 ) {

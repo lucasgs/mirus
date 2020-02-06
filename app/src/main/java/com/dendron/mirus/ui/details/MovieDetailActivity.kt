@@ -35,7 +35,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
                 picasso
                     .load(movie.posterPath)
-                    .fit()
                     .into(movie_poster)
 
                 movie_poster.setOnClickListener { openPicture(movie.posterPath) }
