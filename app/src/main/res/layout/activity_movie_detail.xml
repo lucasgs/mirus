@@ -106,7 +106,7 @@
             android:id="@+id/movie_favorite"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/ic_favorite_white"
+            android:background="@drawable/button_favorite"
             android:checked="false"
             android:text=""
             android:textOff=""

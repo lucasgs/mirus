@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.dendron.mirus.repository.MovieRepository
 import com.dendron.mirus.api.response.Result
 import com.dendron.mirus.di.providesMoviesRepository
-import com.dendron.mirus.model.Movie
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
@@ -21,9 +19,13 @@ class MovieDetailViewModel(
 
     val movies: LiveData<MovieDetailState> = _movies
 
-    fun saveFavoriteMovie(movie: Movie) {
+    fun saveFavoriteMovie(model: MovieUIModel) {
         viewModelScope.launch {
-            movieRepository.saveFavoriteMovie(movie)
+            if (model.isFavorite) {
+                movieRepository.saveFavoriteMovie(model.movie)
+            } else {
+                movieRepository.removeFavoriteMovie(model.movie)
+            }
         }
     }
 }

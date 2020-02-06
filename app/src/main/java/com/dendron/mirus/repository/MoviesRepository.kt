@@ -30,16 +30,37 @@ class MovieRepository(
         )?.results?.map { it.toMovie() } ?: emptyList()
     }
 
-    suspend fun saveFavoriteMovie(movie: Movie) {
+    fun saveFavoriteMovie(movie: Movie) {
         val movies = getFavoritesMovie().toMutableList()
-        movies.add(movie)
-        val data = gson.toJson(movies)
-        favoritesStore.saveFavoriteMovie(data)
+        if (!movies.contains(movie)) {
+            movies.add(movie)
+            val data = gson.toJson(movies)
+            favoritesStore.saveFavoriteMovie(data)
+        }
     }
 
-    suspend fun getFavoritesMovie(): List<Movie> {
+    fun removeFavoriteMovie(movie: Movie) {
+        val movies = getFavoritesMovie().toMutableList()
+        if (movies.contains(movie)) {
+            movies.remove(movie)
+            val data = gson.toJson(movies)
+            favoritesStore.saveFavoriteMovie(data)
+        }
+    }
+
+    fun getFavoritesMovie(): List<Movie> {
         val data = favoritesStore.getFavoritesMovie()
+        if (data.isNullOrEmpty()) return emptyList()
         return gson.fromJson<List<Movie>>(data, moviesType)
+    }
+
+    fun isFavoriteMovie(movie: Movie): Boolean {
+        val movies = getFavoritesMovie()
+        return if (movies.contains(movie)) {
+            movies.any { it.title == movie.title }
+        } else {
+            false
+        }
     }
 
 

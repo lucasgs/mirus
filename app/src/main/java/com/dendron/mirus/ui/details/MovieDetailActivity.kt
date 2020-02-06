@@ -45,7 +45,15 @@ class MovieDetailActivity : AppCompatActivity() {
                 movie_release_date.text = movie.releaseDate
                 movie_overview.text = movie.overview
 
-                movie_favorite.setOnClickListener { moviesDetailViewModel.saveFavoriteMovie(movie) }
+                movie_favorite.isChecked = model.isFavorite
+
+                movie_favorite.setOnClickListener {
+                    moviesDetailViewModel.saveFavoriteMovie(
+                        model.copy(
+                            isFavorite = movie_favorite.isChecked
+                        )
+                    )
+                }
             }
         }
     }

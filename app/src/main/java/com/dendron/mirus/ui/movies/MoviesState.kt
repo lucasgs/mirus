@@ -4,5 +4,6 @@ import com.dendron.mirus.ui.details.MovieUIModel
 
 class MoviesState(
     val sectionName: String,
-    val movies: List<MovieUIModel>
+    val movies: List<MovieUIModel>,
+    val showFavorites: Boolean = false
 )

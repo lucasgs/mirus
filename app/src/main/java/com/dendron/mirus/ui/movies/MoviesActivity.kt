@@ -12,11 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dendron.mirus.R
-import com.dendron.mirus.model.Movie
 import com.dendron.mirus.ui.details.MovieDetailActivity
 import com.dendron.mirus.ui.details.MovieUIModel
-import com.dendron.mirus.ui.details.toUiModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_movies.*
 import kotlinx.android.synthetic.main.content_movies.*
 
@@ -37,11 +34,12 @@ class MoviesActivity : AppCompatActivity() {
 
         viewManager = GridLayoutManager(this, 2)
 
-        viewAdapter = MoviesAdapter { movie ->
+        viewAdapter = MoviesAdapter { model ->
 
+            val updatedModel = model.copy(isFavorite = moviesViewModel.isFavoriteMovie(model.movie))
             startActivity(
                 Intent(this, MovieDetailActivity::class.java)
-                    .putExtra(MOVIE_DATA, movie)
+                    .putExtra(MOVIE_DATA, updatedModel)
             )
         }
 
@@ -57,12 +55,21 @@ class MoviesActivity : AppCompatActivity() {
         moviesViewModel.movies.observe(this, Observer { state ->
             showSectionTitle(state.sectionName)
             showMovies(state.movies)
+            setFavoriteIcon(state.showFavorites)
         })
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener {
+            moviesViewModel.toggleFavoritesMovies(it.tag as Boolean)
         }
+    }
+
+    private fun setFavoriteIcon(showFavorites: Boolean) {
+        if (showFavorites){
+            fab.setImageResource(R.drawable.ic_home_white)
+        } else {
+            fab.setImageResource(R.drawable.ic_favorite_white)
+        }
+        fab.tag = showFavorites
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
