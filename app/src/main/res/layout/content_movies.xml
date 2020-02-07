@@ -13,15 +13,32 @@
         android:id="@+id/tvSectionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
         android:padding="16dp"
         android:text="@string/discover_title"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
+        android:alpha=".8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_no_data"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovies"
@@ -30,7 +47,8 @@
         android:fontFamily="@font/roboto"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle"
+        tools:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

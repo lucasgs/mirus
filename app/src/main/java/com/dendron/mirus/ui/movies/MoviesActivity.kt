@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isGone
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -90,7 +91,9 @@ class MoviesActivity : AppCompatActivity() {
         })
 
         fab.setOnClickListener {
-            moviesViewModel.toggleFavoritesMovies(it.tag as Boolean)
+            if (it.tag != null) {
+                moviesViewModel.toggleFavoritesMovies(it.tag as Boolean)
+            }
         }
     }
 
@@ -137,6 +140,10 @@ class MoviesActivity : AppCompatActivity() {
 
     private fun showMovies(movies: List<MovieUIModel>?) {
         movies?.let {
+
+            recyclerView.isGone = movies.isEmpty()
+            tvEmptyState.isGone = !recyclerView.isGone
+
             viewAdapter.updateItems(movies)
         }
 

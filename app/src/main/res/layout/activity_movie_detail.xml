@@ -53,17 +53,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:transitionName="title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_poster_card"
             app:layout_constraintTop_toBottomOf="@+id/backdrop_guideline"
-            android:fontFamily="@font/roboto"
-            tools:text="A movie title"
-            android:transitionName="title"/>
+            tools:text="A movie title" />
 
         <TextView
             android:id="@+id/movie_release_date"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:textColor="#757575"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/movie_title"
             app:layout_constraintTop_toBottomOf="@+id/movie_title"
             tools:text="20-01-2020" />
@@ -95,6 +95,7 @@
             app:layout_constraintTop_toBottomOf="@+id/movie_poster_title_barrier"
             android:textColor="@color/colorFont"
             android:fontFamily="@font/roboto"
+            android:textSize="16sp"
             tools:text="A movie description"/>
 
         <RatingBar
@@ -103,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/movie_poster_card"
-            app:layout_constraintStart_toStartOf="@+id/movie_release_date" />
+            app:layout_constraintStart_toStartOf="@+id/movie_title" />
 
         <ToggleButton
             android:id="@+id/movie_favorite"
