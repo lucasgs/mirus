@@ -3,7 +3,7 @@
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
     <string name="movie_poster">Movie poster</string>
     <string name="search_title">Type a movie name</string>
-    <string name="search_hint">Ingresar nombre</string>
+    <string name="search_hint">Type a movie name</string>
     <string name="discover_title">Discover</string>
-    <string name="message_no_data">Sin resultados</string>
+    <string name="message_no_data">No data</string>
 </resources>
