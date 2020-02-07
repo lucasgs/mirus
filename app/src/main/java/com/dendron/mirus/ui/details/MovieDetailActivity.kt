@@ -3,10 +3,12 @@ package com.dendron.mirus.ui.details
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.dendron.mirus.R
-import com.dendron.mirus.model.Movie
 import com.dendron.mirus.ui.movies.MoviesActivity.Companion.MOVIE_DATA
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_movie_detail.*
@@ -46,7 +48,26 @@ class MovieDetailActivity : AppCompatActivity() {
 
                 movie_favorite.isChecked = model.isFavorite
 
+                val scaleAnimation = ScaleAnimation(
+                    0f,
+                    1f,
+                    0f,
+                    1f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
+                ).apply {
+                    duration = 800
+                    interpolator = BounceInterpolator()
+                }
+
                 movie_favorite.setOnClickListener {
+
+                    if (movie_favorite.isChecked) {
+                        it.startAnimation(scaleAnimation)
+                    }
+
                     moviesDetailViewModel.saveFavoriteMovie(
                         model.copy(
                             isFavorite = movie_favorite.isChecked
