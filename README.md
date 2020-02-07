@@ -1,29 +1,32 @@
-# mirus
+# mirus 
+---
+
 A movie app 
 
-![alt text](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
+![](screenshots/movies.png)  ![](screenshots/details.png)
 
-Kotlin: https://kotlinlang.org/docs/reference/
+**Libraries**
 
-API https://www.themoviedb.org/documentation/api
+[Kotlin](https://kotlinlang.org/docs/reference/)
 
-Coroutines: https://kotlinlang.org/docs/reference/coroutines.html
+[TMDB](https://www.themoviedb.org/documentation/api)
 
-Retrofit 2: https://github.com/square/retrofit
+[Coroutines](https://kotlinlang.org/docs/reference/coroutines.html)
 
-Gson: https://github.com/google/gson
+[Retrofit](https://github.com/square/retrofit)
 
-Picasso: https://github.com/bumptech/glide
+[Gson](https://github.com/google/gson)
+
+[Picasso](https://square.github.io/picasso/)
 
 
-===> Android Architecture Component
+**Android Architecture Component**
 
-Lifecycle: https://developer.android.com/topic/libraries/architecture/lifecycle
+[Architecture](https://github.com/googlesamples/android-architecture-components)
 
-View Model: https://developer.android.com/topic/libraries/architecture/viewmodel
+[Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle)
 
-Live data: https://developer.android.com/topic/libraries/architecture/livedata.html
+[View Model](https://developer.android.com/topic/libraries/architecture/viewmodel)
 
-Architecture: https://github.com/googlesamples/android-architecture-components
+[Live data](https://developer.android.com/topic/libraries/architecture/livedata.html)
 
-<===
