@@ -1,10 +1,22 @@
-# mirus 
----
-
+# MIRUS 
+--
 A movie app 
+<br />
 
 ![](screenshots/movies.png)  ![](screenshots/details.png)
 
+<br />
+**Android Architecture Component**
+
+[Architecture](https://github.com/googlesamples/android-architecture-components)
+
+[Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle)
+
+[View Model](https://developer.android.com/topic/libraries/architecture/viewmodel)
+
+[Live data](https://developer.android.com/topic/libraries/architecture/livedata.html)
+
+<br />
 **Libraries**
 
 [Kotlin](https://kotlinlang.org/docs/reference/)
@@ -19,14 +31,8 @@ A movie app
 
 [Picasso](https://square.github.io/picasso/)
 
+<br />
+Add your TMDB key to local.properties before use :)
+> tmdb\_api\_key = "YOUR_KEY"
 
-**Android Architecture Component**
-
-[Architecture](https://github.com/googlesamples/android-architecture-components)
-
-[Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle)
-
-[View Model](https://developer.android.com/topic/libraries/architecture/viewmodel)
-
-[Live data](https://developer.android.com/topic/libraries/architecture/livedata.html)
 
